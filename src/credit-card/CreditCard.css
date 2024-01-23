@@ -1,0 +1,34 @@
+.card {
+    display: inline-block;
+    border: 1px solid grey;
+}
+
+.card__form {
+    padding: 4rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+.wrap {
+    flex-wrap: wrap;
+}
+
+.col-8 {
+    width: calc(100% / 12 * 8);
+}
+.col-4 {
+    width: calc(100% / 12 * 4);
+}
+
+#expirationMonth {
+    width: 50%;
+}
+#expirationYear {
+    width: 50%;
+}
