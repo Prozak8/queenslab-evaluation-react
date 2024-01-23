@@ -13,7 +13,7 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                     <label className='input-label' htmlFor='cardNumber'>
                         Card Number
                     </label>
-                    <input type='text' name='cardNumber' id='cardNumber' />
+                    <input type='number' name='cardNumber' id='cardNumber' />
                 </div>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardHolder'>
@@ -21,7 +21,7 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                     </label>
                     <input type='text' name='cardHolder' id='cardHolder' />
                 </div>
-                <div className='row gap-2'>
+                <div className='row gap-2 mb-4'>
                     <div className='input-group col-8 row wrap expiration-group'>
                         <label className='input-label w-100' htmlFor='expirationMonth'>
                             Expiration Date
@@ -38,6 +38,7 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                         <input type='text' name='CVV' id='CVV' />
                     </div>
                 </div>
+                <button className='button-submit'>Submit</button>
             </form>
         </div>
     );
