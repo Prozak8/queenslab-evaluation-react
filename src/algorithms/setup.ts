@@ -7,6 +7,7 @@ async function globalSetup() {
     // Avoid rewriting file for every restart
     if (inputTextFile) return;
 
+    // Feel free to make the file bigger :)
     const content = 'A'.repeat(100000) + 'B'.repeat(100000) + 'C'.repeat(100000) + 'D'.repeat(100000);
 
     fs.writeFileSync(path.join(__dirname, 'big-string.txt'), content);

@@ -3,6 +3,36 @@ const removeIdenticalLetters = (str: string): string => {
 };
 
 const maximumOddSum = (numbers: number[]): number => {
+    if (numbers.length === 1) {
+        console.error('Array has only one value.');
+        return 0;
+    }
+
+    let maxEven = 0;
+    let maxOdd = 0;
+
+    for (let i = 0; i < numbers.length; i++) {
+        const number = numbers[i];
+
+        if (number % 2 === 0) {
+            maxEven = Math.max(maxEven, number);
+        } else {
+            maxOdd = Math.max(maxOdd, number);
+        }
+    }
+
+    if (maxEven !== 0 && maxOdd !== 0) {
+        return maxEven + maxOdd;
+    }
+
+    console.error(
+        'An even or odd number was missing from the given array. ',
+        'maxEven: ',
+        maxEven,
+        'maxOdd',
+        maxOdd,
+    );
+
     return 0;
 };
 
