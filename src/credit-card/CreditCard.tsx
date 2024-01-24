@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from 'react';
 import './CreditCard.css';
 import CreditCardVisual from './CreditCardVisual';
 
@@ -5,27 +6,53 @@ type CreditCardProps = {
     cardNumber: string;
     cardHolder: string;
 };
-const months = ['Month', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
-// TODO: Dynamic years
-const years = ['Year', '2019', '2020', '2021', '2022', '2023', '2024'];
+interface IFormState {
+    cardNumber: string;
+    cardHolder: string;
+    expirationMonth: string;
+    expirationYear: string;
+    cvv: string;
+}
 
 const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
+    const [formState, setFormState] = useState<IFormState>({
+        cardNumber: '',
+        cardHolder: '',
+        expirationMonth: '',
+        expirationYear: '',
+        cvv: '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(formState);
+    };
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        console.log(e.target.name, e.target.value);
+
+        setFormState({
+            ...formState,
+            [e.target.name]: e.target.value,
+        });
+    };
+
     return (
         <div className='card'>
             <CreditCardVisual className='credit-card-visual' />
-            <form action='' className='card__form'>
+            <form onSubmit={handleSubmit} className='card__form'>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardNumber'>
                         Card Number
                     </label>
-                    <input type='number' name='cardNumber' id='cardNumber' />
+                    <input type='number' name='cardNumber' id='cardNumber' onChange={handleInputChange} />
                 </div>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardHolder'>
                         Card Name
                     </label>
-                    <input type='text' name='cardHolder' id='cardHolder' />
+                    <input type='text' name='cardHolder' id='cardHolder' onChange={handleInputChange} />
                 </div>
                 <div className='row gap-2 mb-4'>
                     <div className='input-group col-8 row wrap expiration-group'>
@@ -33,17 +60,19 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                             Expiration Date
                         </label>
                         <div className='expiration-select'>
-                            <select name='expirationMonth' id='expirationMonth'>
-                                {months.map((val) => (
-                                    <option value={val} key={`exp-month-${val}`}>
-                                        {val}
+                            <select name='expirationMonth' id='expirationMonth' onChange={handleInputChange}>
+                                <option value=''>Month</option>
+                                {Array.from({ length: 12 }, (_, i) => (
+                                    <option key={`exp-month-${i}`} value={i + 1}>
+                                        {i + 1 < 10 ? `0${i + 1}` : i + 1}
                                     </option>
                                 ))}
                             </select>
-                            <select name='expirationYear' id='expirationYear'>
-                                {years.map((val) => (
-                                    <option value={val} key={`exp-year-${val}`}>
-                                        {val}
+                            <select name='expirationYear' id='expirationYear' onChange={handleInputChange}>
+                                <option value=''>Year</option>
+                                {Array.from({ length: 5 }, (_, i) => (
+                                    <option key={`exp-year-${i}`} value={new Date().getFullYear() + i}>
+                                        {new Date().getFullYear() + i}
                                     </option>
                                 ))}
                             </select>
@@ -53,10 +82,12 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                         <label className='input-label' htmlFor='CVV'>
                             CVV
                         </label>
-                        <input type='number' name='CVV' id='CVV' />
+                        <input type='number' name='CVV' id='CVV' onChange={handleInputChange} />
                     </div>
                 </div>
-                <button className='button-submit'>Submit</button>
+                <button type='submit' className='button-submit'>
+                    Submit
+                </button>
             </form>
         </div>
     );
