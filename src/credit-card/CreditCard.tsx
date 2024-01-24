@@ -1,4 +1,5 @@
 import './CreditCard.css';
+import CreditCardVisual from './CreditCardVisual';
 
 type CreditCardProps = {
     cardNumber: string;
@@ -12,6 +13,7 @@ const years = ['Year', '2019', '2020', '2021', '2022', '2023', '2024'];
 const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
     return (
         <div className='card'>
+            <CreditCardVisual className='credit-card-visual' />
             <form action='' className='card__form'>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardNumber'>
@@ -51,7 +53,7 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                         <label className='input-label' htmlFor='CVV'>
                             CVV
                         </label>
-                        <input type='text' name='CVV' id='CVV' />
+                        <input type='number' name='CVV' id='CVV' />
                     </div>
                 </div>
                 <button className='button-submit'>Submit</button>
