@@ -1,6 +1,46 @@
 .card-visual {
     background-color: black;
-    padding: 2rem;
+    padding: 3rem;
     width: 50rem;
     border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+.card-visual > * {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-visual__sticker {
+    width: 3rem;
+    height: 2rem;
+    background-color: white;
+}
+.card-visual__type {
+    width: 4rem;
+    height: 3rem;
+    background-color: white;
+}
+
+.card-visual__number {
+    color: white;
+    font-size: 2rem;
+}
+
+.card-visual__card-holder {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.card-visual__expiry {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.5rem;
 }

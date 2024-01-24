@@ -90,7 +90,7 @@ label {
 
 .credit-card-visual {
     position: absolute;
-    top: -2rem;
+    bottom: 80%;
     left: 50%;
     transform: translateX(-50%);
 }
