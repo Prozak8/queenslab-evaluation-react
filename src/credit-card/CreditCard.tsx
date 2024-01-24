@@ -24,18 +24,48 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
         cvv: '',
     });
 
+    const [formErrors, setFormErrors] = useState<Partial<IFormState>>({});
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formState);
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        console.log(e.target.name, e.target.value);
+        const { name, value } = e.target;
+        console.log(name, value);
 
         setFormState({
             ...formState,
-            [e.target.name]: e.target.value,
+            [name]: value,
         });
+
+        if (formErrors[name as keyof IFormState]) {
+            validateField(name, value);
+        }
+    };
+
+    const handleInputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        validateField(name, value);
+    };
+
+    const validateField = (name: string, value: string) => {
+        switch (name) {
+            case 'cardNumber':
+                if (value.length !== 16) {
+                    setFormErrors({
+                        ...formErrors,
+                        cardNumber: 'Card number must be between 16 digits long',
+                    });
+                } else {
+                    const { cardNumber, ...rest } = formErrors;
+                    setFormErrors(rest);
+                }
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -46,7 +76,14 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                     <label className='input-label' htmlFor='cardNumber'>
                         Card Number
                     </label>
-                    <input type='number' name='cardNumber' id='cardNumber' onChange={handleInputChange} />
+                    <input
+                        type='number'
+                        name='cardNumber'
+                        id='cardNumber'
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur}
+                    />
+                    {formErrors.cardNumber && <span className='form-error'>{formErrors.cardNumber}</span>}
                 </div>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardHolder'>
@@ -79,10 +116,10 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
                         </div>
                     </div>
                     <div className='input-group col-4'>
-                        <label className='input-label' htmlFor='CVV'>
+                        <label className='input-label' htmlFor='cvv'>
                             CVV
                         </label>
-                        <input type='number' name='CVV' id='CVV' onChange={handleInputChange} />
+                        <input type='number' name='cvv' id='cvv' onChange={handleInputChange} />
                     </div>
                 </div>
                 <button type='submit' className='button-submit'>
