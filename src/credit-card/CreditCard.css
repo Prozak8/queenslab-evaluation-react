@@ -12,12 +12,24 @@
 }
 
 .input-group {
+    position: relative;
     display: flex;
     flex-direction: column;
+}
+.input-group:has(.input-error) input, 
+.input-group:has(.input-error) select {
+    border: 1px solid red;
 }
 .input-label {
     margin-bottom: 0.5rem;
 }
+.input-error {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    color: red;
+}
+
 .expiration-group {
     flex-wrap: wrap;
 }
@@ -52,18 +64,17 @@
     width: calc(100% / 12 * 4);
 }
 
-#expirationMonth {
-    width: 50%;
-}
-#expirationYear {
-    width: 50%;
-}
-
 .mb-2 {
     margin-bottom: 2rem;
 }
 .mb-4 {
     margin-bottom: 4rem;
+}
+.w-100 {
+    width: 100%;
+}
+.relative {
+    position: relative;
 }
 
 input,
@@ -82,10 +93,6 @@ input::-webkit-inner-spin-button {
 
 label {
     font-size: 1.5rem;
-}
-
-.w-100 {
-    width: 100%;
 }
 
 .credit-card-visual {
