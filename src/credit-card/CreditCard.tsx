@@ -1,13 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import './CreditCard.css';
 import CreditCardVisual from './CreditCardVisual';
 
 type CreditCardProps = {
     cardNumber: string;
     cardHolder: string;
+    onSubmit: (formData: IFormState) => void;
 };
 
-interface IFormState {
+export type IFormState = {
     cardNumber: string;
     cardHolder: string;
     expirationMonth: string;
@@ -15,7 +16,7 @@ interface IFormState {
     cvv: string;
 }
 
-const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
+const CreditCard = ({ cardNumber, cardHolder, onSubmit }: CreditCardProps) => {
     const [formState, setFormState] = useState<IFormState>({
         cardNumber: '',
         cardHolder: '',
@@ -28,6 +29,16 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        for (const [key, value] of Object.entries(formState)) {
+            validateField(key, value);
+        }
+
+        if (Object.keys(formErrors).length) {
+            return;
+        }
+
+        onSubmit(formState);
 
         console.log(formErrors);
         console.log(formState);
@@ -51,86 +62,89 @@ const CreditCard = ({ cardNumber, cardHolder }: CreditCardProps) => {
         validateField(name, value);
     };
 
-    const validateField = (name: string, value: string) => {
-        switch (name) {
-            case 'cardNumber':
-                if (!value.length) {
-                    setFormErrors({
-                        ...formErrors,
-                        cardNumber: 'Card number is required',
-                    });
-                } else if (value.length !== 16) {
-                    setFormErrors({
-                        ...formErrors,
-                        cardNumber: 'Card number must be 16 digits long',
-                    });
-                } else {
-                    const { cardNumber, ...rest } = formErrors;
-                    setFormErrors(rest);
-                }
-                break;
-            case 'cardHolder':
-                if (!value.length) {
-                    setFormErrors({
-                        ...formErrors,
-                        cardHolder: 'Card name is required',
-                    });
-                } else if (/\d/.test(value)) {
-                    setFormErrors({
-                        ...formErrors,
-                        cardHolder: 'Card holder name should not contain numbers',
-                    });
-                } else {
-                    const { cardHolder, ...rest } = formErrors;
-                    setFormErrors(rest);
-                }
-                break;
-            case 'expirationMonth':
-                if (!value.length) {
-                    setFormErrors({
-                        ...formErrors,
-                        expirationMonth: 'Please select a month',
-                    });
-                } else {
-                    const { expirationMonth, ...rest } = formErrors;
-                    setFormErrors(rest);
-                }
-                break;
-            case 'expirationYear':
-                if (!value.length) {
-                    setFormErrors({
-                        ...formErrors,
-                        expirationYear: 'Please select a year',
-                    });
-                } else {
-                    const { expirationYear, ...rest } = formErrors;
-                    setFormErrors(rest);
-                }
-                break;
-            case 'cvv':
-                if (!value.length) {
-                    setFormErrors({
-                        ...formErrors,
-                        cvv: 'CVV is required',
-                    });
-                } else if (value.length !== 3) {
-                    setFormErrors({
-                        ...formErrors,
-                        cvv: 'CVV must be 4 digits long',
-                    });
-                } else {
-                    const { cvv, ...rest } = formErrors;
-                    setFormErrors(rest);
-                }
-                break;
-            default:
-                break;
-        }
-    };
+    const validateField = useCallback(
+        (name: string, value: string) => {
+            switch (name) {
+                case 'cardNumber':
+                    if (!value.length) {
+                        setFormErrors({
+                            ...formErrors,
+                            cardNumber: 'Card number is required',
+                        });
+                    } else if (value.length !== 16) {
+                        setFormErrors({
+                            ...formErrors,
+                            cardNumber: 'Card number must be 16 digits long',
+                        });
+                    } else {
+                        const { cardNumber, ...rest } = formErrors;
+                        setFormErrors(rest);
+                    }
+                    break;
+                case 'cardHolder':
+                    if (!value.length) {
+                        setFormErrors({
+                            ...formErrors,
+                            cardHolder: 'Card name is required',
+                        });
+                    } else if (/\d/.test(value)) {
+                        setFormErrors({
+                            ...formErrors,
+                            cardHolder: 'Card holder name should not contain numbers',
+                        });
+                    } else {
+                        const { cardHolder, ...rest } = formErrors;
+                        setFormErrors(rest);
+                    }
+                    break;
+                case 'expirationMonth':
+                    if (!value.length) {
+                        setFormErrors({
+                            ...formErrors,
+                            expirationMonth: 'Please select a month',
+                        });
+                    } else {
+                        const { expirationMonth, ...rest } = formErrors;
+                        setFormErrors(rest);
+                    }
+                    break;
+                case 'expirationYear':
+                    if (!value.length) {
+                        setFormErrors({
+                            ...formErrors,
+                            expirationYear: 'Please select a year',
+                        });
+                    } else {
+                        const { expirationYear, ...rest } = formErrors;
+                        setFormErrors(rest);
+                    }
+                    break;
+                case 'cvv':
+                    if (!value.length) {
+                        setFormErrors({
+                            ...formErrors,
+                            cvv: 'CVV is required',
+                        });
+                    } else if (value.length !== 3) {
+                        setFormErrors({
+                            ...formErrors,
+                            cvv: 'CVV must be 3 digits long',
+                        });
+                    } else {
+                        const { cvv, ...rest } = formErrors;
+                        setFormErrors(rest);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        },
+        [formErrors],
+    );
 
     return (
         <div className='card'>
-            <CreditCardVisual className='credit-card-visual' />
+            <CreditCardVisual className='credit-card-visual' formState={formState} />
             <form onSubmit={handleSubmit} className='card__form'>
                 <div className='input-group mb-2'>
                     <label className='input-label' htmlFor='cardNumber'>
