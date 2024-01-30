@@ -19,6 +19,9 @@
 .card-visual__number__part:not(:last-child) {
     margin-right: 1rem;
 }
+.card-visual__number__part__char:not(:last-child) {
+    margin-right: 0.5rem;
+}
 
 .card-visual__sticker {
     width: 3rem;
