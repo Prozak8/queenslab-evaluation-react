@@ -17,10 +17,10 @@
     justify-content: left;
 }
 .card-visual__number__part:not(:last-child) {
-    margin-right: 1rem;
+    margin-right: 1.5rem;
 }
 .card-visual__number__part__char:not(:last-child) {
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
 }
 
 .card-visual__sticker {
