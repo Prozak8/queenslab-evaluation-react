@@ -35,6 +35,8 @@ const useSplitCardNumber = (cardNumber: string, cardType: 'visa') => {
     }, [cardNumber, card]);
 };
 
+const formattedExpirationMonth = (month: string) => (month.length > 1 ? month : `0${month}`);
+
 const CreditCardVisual = ({ className, formState }: CreditCardVisualProps) => {
     const { cardNumber, cardHolder, expirationMonth, expirationYear, cvv } = formState;
 
@@ -60,11 +62,14 @@ const CreditCardVisual = ({ className, formState }: CreditCardVisualProps) => {
             <div>
                 <div className='card-visual__card-holder'>
                     <span>Card Holder</span>
-                    <span>{cardHolder}</span>
+                    {/* Use a non blank space to preserve height */}
+                    <span>{cardHolder || `\u00A0`}</span>
                 </div>
                 <div className='card-visual__expiry'>
                     <span>Expiry</span>
-                    <span>{`${expirationMonth}/${expirationYear}`}</span>
+                    <span>{`${(expirationMonth && formattedExpirationMonth(expirationMonth)) || 'MM'}/${
+                        expirationYear.slice(2, 4) || 'YY'
+                    }`}</span>
                 </div>
             </div>
         </div>
