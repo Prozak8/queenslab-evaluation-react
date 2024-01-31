@@ -3,8 +3,6 @@ import './CreditCard.css';
 import CreditCardVisual from './CreditCardVisual';
 
 type CreditCardProps = {
-    cardNumber: string;
-    cardHolder: string;
     onSubmit: (formData: IFormState) => void;
 };
 
@@ -16,7 +14,7 @@ export type IFormState = {
     cvv: string;
 };
 
-const CreditCard = ({ cardNumber, cardHolder, onSubmit }: CreditCardProps) => {
+const CreditCard = ({ onSubmit }: CreditCardProps) => {
     const [formState, setFormState] = useState<IFormState>({
         cardNumber: '',
         cardHolder: '',

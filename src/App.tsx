@@ -3,9 +3,6 @@ import { useState } from 'react';
 import CreditCard, { IFormState } from './credit-card/CreditCard';
 
 const App = () => {
-    const [cardNumber, setCardNumber] = useState('');
-    const [cardHolder, setCardHolder] = useState('');
-
     const onSubmit = async (formData: IFormState) => {
         const response = await fetch('/api/payments', {
             method: 'POST',
@@ -25,7 +22,7 @@ const App = () => {
 
     return (
         <div className='App'>
-            <CreditCard cardNumber={cardNumber} cardHolder={cardHolder} onSubmit={onSubmit} />
+            <CreditCard onSubmit={onSubmit} />
         </div>
     );
 };
