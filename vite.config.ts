@@ -6,6 +6,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [react()],
     test: {
-        setupFiles: ['./src/algorithms/setup.ts'],
-    } as UserConfig,
+        global: true,
+        setupFiles: ['./src/algorithms/setup.ts', './src/credit-card/setupTest.ts'],
+        environment: 'jsdom',
+    },
 });
