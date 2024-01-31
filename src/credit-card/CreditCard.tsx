@@ -28,11 +28,15 @@ const CreditCard = ({ onSubmit }: CreditCardProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        Object.entries(formState).forEach(([key, value]) => {
-            validateField(key, value);
-        });
+        const newErrors = Object.entries(formState).reduce((errors: Partial<IFormState>, [key, value]) => {
+            const error = validateField(key, value);
+            if (error) {
+                errors[key as keyof IFormState] = error;
+            }
+            return errors;
+        }, {});
 
-        if (Object.keys(formErrors).length === 0) {
+        if (Object.keys(newErrors).length === 0) {
             onSubmit(formState);
         }
     };
@@ -57,6 +61,7 @@ const CreditCard = ({ onSubmit }: CreditCardProps) => {
 
     const validateField = useCallback((name: string, value: string) => {
         let error = '';
+
         switch (name) {
             case 'cardNumber':
                 if (!value) {
@@ -96,6 +101,8 @@ const CreditCard = ({ onSubmit }: CreditCardProps) => {
             ...prevErrors,
             [name]: error,
         }));
+
+        return error;
     }, []);
 
     return (
@@ -141,6 +148,7 @@ const CreditCard = ({ onSubmit }: CreditCardProps) => {
                                     className='w-100'
                                     onChange={handleInputChange}
                                     onBlur={handleInputBlur}
+                                    data-testid='expiration-month-select'
                                 >
                                     <option value=''>Month</option>
                                     {Array.from({ length: 12 }, (_, i) => (
@@ -160,6 +168,7 @@ const CreditCard = ({ onSubmit }: CreditCardProps) => {
                                     className='w-100'
                                     onChange={handleInputChange}
                                     onBlur={handleInputBlur}
+                                    data-testid='expiration-year-select'
                                 >
                                     <option value=''>Year</option>
                                     {Array.from({ length: 5 }, (_, i) => (
